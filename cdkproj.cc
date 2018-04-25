@@ -1,10 +1,6 @@
-/*
- * Usage of CDK Matrix
- *
- * File:   example1.cc
- * Author: Stephen Perkins
- * Email:  stephen.perkins@utdallas.edu
- */
+// Micaelan Eger
+// mte160230@utdallas.edu
+// CS3377.002
 
 #include <stdint.h>
 #include <sstream>
@@ -122,6 +118,27 @@ int main()
    */
   setCDKMatrixCell(myMatrix, 1, 3, record3.str().c_str());
   drawCDKMatrix(myMatrix, true);    /* required  */
+
+  BinaryFileRecord *records=new BinaryFileRecord();
+  stringstream tempRecord;
+
+  /*
+   * Read in records
+   */
+  for(int i=1;i<=(int)(myRecord->numRecords);i++){
+    if(i<=4){
+      tempRecord.str("");
+
+      binInFile.read(reinterpret_cast<char *>(&records->strLength),sizeof(records->strLength));
+      tempRecord<<"strlen: "<<records->strLength;
+      setCDKMatrixCell(myMatrix, i+1, 1, tempRecord.str().c_str());
+      drawCDKMatrix(myMatrix, true);
+    
+      binInFile.read(records->stringBuffer,sizeof(records->stringBuffer));
+      setCDKMatrixCell(myMatrix, i+1, 2, records->stringBuffer);
+      drawCDKMatrix(myMatrix, true);
+    }
+  }
 
   /* So we can see results, pause until a key is pressed. */
   unsigned char x;
