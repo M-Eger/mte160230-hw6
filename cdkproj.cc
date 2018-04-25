@@ -120,18 +120,17 @@ int main()
   drawCDKMatrix(myMatrix, true);    /* required  */
 
   BinaryFileRecord *records=new BinaryFileRecord();
-  stringstream tempRecord;
+  char tempBuffer[30];
 
   /*
    * Read in records
    */
   for(int i=1;i<=(int)(myRecord->numRecords);i++){
     if(i<=4){
-      tempRecord.str("");
-
+  
       binInFile.read(reinterpret_cast<char *>(&records->strLength),sizeof(records->strLength));
-      tempRecord<<"strlen: "<<records->strLength;
-      setCDKMatrixCell(myMatrix, i+1, 1, tempRecord.str().c_str());
+      sprintf(tempBuffer,"strlen: %.2d",records->strLength);
+      setCDKMatrixCell(myMatrix, i+1, 1, tempBuffer);
       drawCDKMatrix(myMatrix, true);
     
       binInFile.read(records->stringBuffer,sizeof(records->stringBuffer));
